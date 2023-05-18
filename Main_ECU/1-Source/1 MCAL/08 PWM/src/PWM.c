@@ -158,15 +158,17 @@ void PWM_Init(void)
     }
 }
 /******************************************************************************
- * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
- * \Description     : Describe this service
- *
+ * \Syntax          : void PWM_Start(PWM_Channel_t Channel)
+ * \Description     : his function starts the PWM output on a specified channel.
+ *                    The function takes a parameter named Channel, which specifies the PWM output channel to start.
+ *                    The function then calculates the index of the PWM module based on the channel number and sets
+ *                    the enable bit of the PWM generator to start the PWM output.
+ *                    Finally, the function enables the PWM output channel by setting the corresponding bit in the PWMENABLE register.
  * \Sync\Async      : Synchronous
  * \Reentrancy      : Non Reentrant
- * \Parameters (in) : parameterName   Parameter Describtion
+ * \Parameters (in) : PWM_Channel_t Channel
  * \Parameters (out): None
- * \Return value:   : Std_ReturnType  E_OK
- *                                    E_NOT_OK
+ * \Return value:   : None
  *******************************************************************************/
 
 void PWM_Start(PWM_Channel_t Channel)
@@ -183,11 +185,11 @@ void PWM_Start(PWM_Channel_t Channel)
 }
 /******************************************************************************
  * \Syntax          : void PWM_Stop(PWM_Channel_t Channel)
- * \Description     : his function starts the PWM output on a specified channel.
- *                    The function takes a parameter named Channel, which specifies the PWM output channel to start.
- *                    The function then calculates the index of the PWM module based on the channel number and sets
- *                    the enable bit of the PWM generator to start the PWM output.
- *                    Finally, the function enables the PWM output channel by setting the corresponding bit in the PWMENABLE register.
+ * \Description     : This function stops the PWM output on a specified channel.
+ *                    The function takes a parameter named Channel, which specifies
+ *                    the PWM output channel to stop.The function disables the PWM
+ *                    generator associated with the specified channel by clearing the
+ *                    enable bit in the PWM control register.
  * \Sync\Async      : Synchronous
  * \Reentrancy      : Non Reentrant
  * \Parameters (in) : PWM_Channel_t Channel
@@ -208,15 +210,17 @@ void PWM_Stop(PWM_Channel_t Channel)
     }
 }
 /******************************************************************************
- * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
- * \Description     : Describe this service
- *
+ * \Syntax          : void PWM_SET_Frequency_Duty(PWM_Channel_t Channel, u32 frequency, u8 DutyCycle)
+ * \Description     : This function sets the frequency and duty cycle of a specified PWM output channel.
+ *                    The function takes three parameters: Channel, which specifies the PWM output channel to configure;
+ *                    frequency, which specifies the PWM frequency to set; and DutyCycle, which specifies the duty cycle to set.
+ *                    The function calculates the total time of one PWM period using the specified frequency and calculates the
+ *                    preload value and duty cycle based on the specified duty cycle and total time.
  * \Sync\Async      : Synchronous
  * \Reentrancy      : Non Reentrant
- * \Parameters (in) : parameterName   Parameter Describtion
+ * \Parameters (in) : PWM_Channel_t Channel, u32 frequency, u8 DutyCycle
  * \Parameters (out): None
- * \Return value:   : Std_ReturnType  E_OK
- *                                    E_NOT_OK
+ * \Return value:   : None
  *******************************************************************************/
 
 void PWM_SET_Frequency_Duty(PWM_Channel_t Channel, u32 frequency, u8 DutyCycle)
@@ -244,11 +248,8 @@ void PWM_SET_Frequency_Duty(PWM_Channel_t Channel, u32 frequency, u8 DutyCycle)
 }
 /******************************************************************************
  * \Syntax          : void PWM_Set_Duty(PWM_Channel_t Channel, u8 DutyCycle)
- * \Description     : This function sets the frequency and duty cycle of a specified PWM output channel.
- *                    The function takes three parameters: Channel, which specifies the PWM output channel to configure;
- *                    frequency, which specifies the PWM frequency to set; and DutyCycle, which specifies the duty cycle to set.
- *                    The function calculates the total time of one PWM period using the specified frequency and calculates the
- *                    preload value and duty cycle based on the specified duty cycle and total time.
+ * \Description     : This function sets the duty cycle of a specified PWM output channel.The function takes two parameters:
+ *                    Channel, which specifies the PWM output channel to configure; and DutyCycle, which specifies the duty cycle to set.
  *
  * \Sync\Async      : Synchronous
  * \Reentrancy      : Non Reentrant
