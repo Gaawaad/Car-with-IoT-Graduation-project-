@@ -66,6 +66,11 @@
 #define _UART_6_BASE_ADD                    (0x40012000)
 #define _UART_7_BASE_ADD                    (0x40013000)
 
+#define _I2C_0_BASE_ADD                     (0x40020000)
+#define _I2C_1_BASE_ADD                     (0x40021000)
+#define _I2C_2_BASE_ADD                     (0x40022000)
+#define _I2C_3_BASE_ADD                     (0x40023000)
+
 #define APINT_Reg                           *((volatile u32*)(_CORTEXM4_PIRF_BASE_ADD + 0xD0C))
 #define CONTROL_Reg                         *((volatile u32*)(_CORTEXM4_PIRF_BASE_ADD + 0xD04))
 #define PRI0_Reg                            *((volatile u32*)(_CORTEXM4_PIRF_BASE_ADD + 0x400))
@@ -99,11 +104,14 @@
 #define DIS4_Reg                            *((volatile u32*)(_CORTEXM4_PIRF_BASE_ADD + 0x190))
 #define RCC_Reg                             *((volatile u32*)(_SYSTEM_CTR_BASE_ADD + 0x060))
 
+/*(Clock Gating Registers)*******************************************************/
+
 #define RCGCGPIO_Reg                        *((volatile u32*)(_SYSTEM_CTR_BASE_ADD + 0x608))
 #define RCGCWD_Reg                          *((volatile u32*)(_SYSTEM_CTR_BASE_ADD + 0x600))
 #define RCGCTIMER_Reg                       *((volatile u32*)(_SYSTEM_CTR_BASE_ADD + 0x604))
 #define RCGCPWM_Reg                         *((volatile u32*)(_SYSTEM_CTR_BASE_ADD + 0x640))
 #define RCGCUART_REG                        *((volatile u32*)(_SYSTEM_CTR_BASE_ADD + 0x618))
+#define RCGCI2C_Reg                         *((volatile u32*)(_SYSTEM_CTR_BASE_ADD + 0x620))
 
 /*(GPIO Ports (AHB,APB) Registers)*******************************************************/
 #if(_GPIO_PORT_A_BUS == 1)
@@ -394,6 +402,20 @@
 #define GPTMTAPR_4A_Reg                      *((volatile u32*)(_TIMER4_16_32_BASE_ADD + 0x038))
 #define GPTMTAPR_5A_Reg                      *((volatile u32*)(_TIMER5_16_32_BASE_ADD + 0x038))
 
+#define GPTMRIS_0A_Reg                       *((volatile u32*)(_TIMER0_16_32_BASE_ADD + 0x01C))
+#define GPTMRIS_1A_Reg                       *((volatile u32*)(_TIMER1_16_32_BASE_ADD + 0x01C))
+#define GPTMRIS_2A_Reg                       *((volatile u32*)(_TIMER2_16_32_BASE_ADD + 0x01C))
+#define GPTMRIS_3A_Reg                       *((volatile u32*)(_TIMER3_16_32_BASE_ADD + 0x01C))
+#define GPTMRIS_4A_Reg                       *((volatile u32*)(_TIMER4_16_32_BASE_ADD + 0x01C))
+#define GPTMRIS_5A_Reg                       *((volatile u32*)(_TIMER5_16_32_BASE_ADD + 0x01C))
+
+#define GPTMTAR_0A_Reg                       *((volatile u32*)(_TIMER0_16_32_BASE_ADD + 0x048))
+#define GPTMTAR_1A_Reg                       *((volatile u32*)(_TIMER1_16_32_BASE_ADD + 0x048))
+#define GPTMTAR_2A_Reg                       *((volatile u32*)(_TIMER2_16_32_BASE_ADD + 0x048))
+#define GPTMTAR_3A_Reg                       *((volatile u32*)(_TIMER3_16_32_BASE_ADD + 0x048))
+#define GPTMTAR_4A_Reg                       *((volatile u32*)(_TIMER4_16_32_BASE_ADD + 0x048))
+#define GPTMTAR_5A_Reg                       *((volatile u32*)(_TIMER5_16_32_BASE_ADD + 0x048))
+
 /*(ADC Registers)**************************************************************/
 
 #define ADCACTSS_ADC0_Rrg                    *((volatile u32*)(_ADC0_BASE_ADD + 0x000))
@@ -518,6 +540,34 @@
 #define UART_5_IM_Reg                        *((volatile u32*)(_UART_5_BASE_ADD + 0x038))
 #define UART_6_IM_Reg                        *((volatile u32*)(_UART_6_BASE_ADD + 0x038))
 #define UART_7_IM_Reg                        *((volatile u32*)(_UART_7_BASE_ADD + 0x038))
+
+
+/*(I2C Registers)**************************************************************/
+
+#define I2CMCR_0_Reg                        *((volatile u32*)(_I2C_0_BASE_ADD + 0x020))
+#define I2CMCR_1_Reg                        *((volatile u32*)(_I2C_1_BASE_ADD + 0x020))
+#define I2CMCR_2_Reg                        *((volatile u32*)(_I2C_2_BASE_ADD + 0x020))
+#define I2CMCR_3_Reg                        *((volatile u32*)(_I2C_3_BASE_ADD + 0x020))
+
+#define I2CMTPR_0_Reg                       *((volatile u32*)(_I2C_0_BASE_ADD + 0x00C))
+#define I2CMTPR_1_Reg                       *((volatile u32*)(_I2C_1_BASE_ADD + 0x00C))
+#define I2CMTPR_2_Reg                       *((volatile u32*)(_I2C_2_BASE_ADD + 0x00C))
+#define I2CMTPR_3_Reg                       *((volatile u32*)(_I2C_3_BASE_ADD + 0x00C))
+
+#define I2CMSA_0_Reg                        *((volatile u32*)(_I2C_0_BASE_ADD + 0x000))
+#define I2CMSA_1_Reg                        *((volatile u32*)(_I2C_1_BASE_ADD + 0x000))
+#define I2CMSA_2_Reg                        *((volatile u32*)(_I2C_2_BASE_ADD + 0x000))
+#define I2CMSA_3_Reg                        *((volatile u32*)(_I2C_3_BASE_ADD + 0x000))
+
+#define I2CMDR_0_Reg                        *((volatile u32*)(_I2C_0_BASE_ADD + 0x008))
+#define I2CMDR_1_Reg                        *((volatile u32*)(_I2C_1_BASE_ADD + 0x008))
+#define I2CMDR_2_Reg                        *((volatile u32*)(_I2C_2_BASE_ADD + 0x008))
+#define I2CMDR_3_Reg                        *((volatile u32*)(_I2C_3_BASE_ADD + 0x008))
+
+#define I2CMCS_0_Reg                        *((volatile u32*)(_I2C_0_BASE_ADD + 0x004))
+#define I2CMCS_1_Reg                        *((volatile u32*)(_I2C_1_BASE_ADD + 0x004))
+#define I2CMCS_2_Reg                        *((volatile u32*)(_I2C_2_BASE_ADD + 0x004))
+#define I2CMCS_3_Reg                        *((volatile u32*)(_I2C_3_BASE_ADD + 0x004))
 
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION MACROS

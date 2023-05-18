@@ -48,19 +48,23 @@
 
 #define _WDT_0_CLOCK_ENANLE       0
 #define _WDT_1_CLOCK_ENANLE       0
+
 #define _TIMER_0_A_CLOCK_ENANLE   1
 #define _TIMER_1_A_CLOCK_ENANLE   1
 #define _TIMER_2_A_CLOCK_ENANLE   1
 #define _TIMER_3_A_CLOCK_ENANLE   1
 #define _TIMER_4_A_CLOCK_ENANLE   1
+
 #define _GPIO_PORT_A_CLOCK_ENABLE 1
 #define _GPIO_PORT_B_CLOCK_ENABLE 1
 #define _GPIO_PORT_C_CLOCK_ENABLE 1
 #define _GPIO_PORT_D_CLOCK_ENABLE 1
 #define _GPIO_PORT_E_CLOCK_ENABLE 1
 #define _GPIO_PORT_F_CLOCK_ENABLE 1
+
 #define _PWM_M0_CLOCK_ENACLE      1
 #define _PWM_M1_CLOCK_ENACLE      1
+
 #define _UART_0_CLOCK_ENABLE      1
 #define _UART_1_CLOCK_ENABLE      1
 #define _UART_2_CLOCK_ENABLE      1
@@ -69,6 +73,12 @@
 #define _UART_5_CLOCK_ENABLE      1
 #define _UART_6_CLOCK_ENABLE      1
 #define _UART_7_CLOCK_ENABLE      1
+
+#define _I2C_0_CLOCK_ENABLE      1
+#define _I2C_1_CLOCK_ENABLE      1
+#define _I2C_2_CLOCK_ENABLE      1
+#define _I2C_3_CLOCK_ENABLE      1
+
 /*
  *Describtion : Control the clock access to Peripheral
  *Options :

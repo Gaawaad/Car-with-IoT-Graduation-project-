@@ -2,10 +2,43 @@
  *  FILE DESCRIPTION
  *  -----------------------------------------------------------------------------------------------------------------*/
 /**        \file  UART.c
- *        \brief
- *
- *      \details
- *
+          \brief  Configuring a UART (Universal Asynchronous Receiver/Transmitter) interface
+        \details  Contains:
+                    1-LOCAL DATA
+                        UART_CTL_Reg_Arr[]
+                        UART_IBRD_Reg_Arr[]
+                        UART_FBRD_Reg_Arr[]
+                        UART_FR_Reg_Arr[]
+                        UART_DR_Reg_Arr[]
+                        UART_LCRH_Reg_Arr[]
+                        UART_CC_Reg_Arr[]
+                        UART_IM_Reg_Arr[]
+                        BaudRateInt_Arr[]
+                        BaudRateFrc_Arr[]
+                        UART_Noti_Arr[]
+                        UART_InterruptNum_Arr[]
+                        RxBuffer[]
+                    2-GLOBAL DATA
+                        UART_Cfg_Arr[]
+                    3-GLOBAL FUNCTIONS
+                        void UART_Init(void)
+                        void UART_SendChr(UART_Num_t UART_Number, u8 data)
+                        u8 UART_ReceiveChr(UART_Num_t UART_Number)
+                        void UART_SendStr(UART_Num_t UART_Number, u8 *str)
+                        void UART_SetNotification(UART_Num_t UART_Number, void (*UART_Notfi)(void))
+                        u8 UART_readBuffer(UART_Num_t UART_Number)
+                        void UART_readStr(UART_Num_t UART_Number, u8 *str)
+                        void UART_SendNum(UART_Num_t UART_Number, u32 num)
+                        void UART0_Handler(void)
+                        void UART1_Handler(void)
+                        void UART2_Handler(void)
+                        void UART3_Handler(void)
+                        void UART4_Handler(void)
+                        void UART5_Handler(void)
+                        void UART6_Handler(void)
+                        void UART7_Handler(void)
+                     4-STATIC FUNCTIONS
+                        static void dummy_func(void)
  *
  *********************************************************************************************************************/
 
@@ -13,10 +46,6 @@
  *  INCLUDES
  *********************************************************************************************************************/
 #include "UART.h"
-
-/**********************************************************************************************************************
- *  LOCAL MACROS CONSTANT\FUNCTION
- *********************************************************************************************************************/
 
 /**********************************************************************************************************************
  *  LOCAL DATA
@@ -66,10 +95,11 @@ u16 BaudRateInt_Arr[] = { 833, 208, 104, 52, 8 };
 u16 BaudRateFrc_Arr[] = { 21, 21, 11, 5, 44 };
 
 typedef void (*function)(void);
-static function UART_Noti_Arr[8];
+static function UART_Noti_Arr[8]={dummy_func,dummy_func,dummy_func,dummy_func,dummy_func,dummy_func,dummy_func,dummy_func};
 
 IntCtrNum_t UART_InterruptNum_Arr[] = { _INT5, _INT6, _INT33, _INT59, _INT60,
                                         _INT61, _INT62, _INT63 };
+
 u8 RxBuffer[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
 
@@ -77,28 +107,20 @@ u8 RxBuffer[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
  *  GLOBAL DATA
  *********************************************************************************************************************/
 extern UART_Cfg_t UART_Cfg_Arr[];
-/**********************************************************************************************************************
- *  LOCAL FUNCTION PROTOTYPES
- *********************************************************************************************************************/
-
-/**********************************************************************************************************************
- *  LOCAL FUNCTIONS
- *********************************************************************************************************************/
 
 /**********************************************************************************************************************
  *  GLOBAL FUNCTIONS
  *********************************************************************************************************************/
 
 /******************************************************************************
- * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
- * \Description     : Describe this service
- *
- * \Sync\Async      : Synchronous
+ * \Syntax          : void UART_Init(void)
+ * \Description     : initializing All of UART (Universal Asynchronous Receiver/Transmitter) interfaces
+ *                    based on the configuration parameters defined in another source file ("UART_cfg.c").
+ * \Sync\Async      : Asynchronous
  * \Reentrancy      : Non Reentrant
- * \Parameters (in) : parameterName   Parameter Describtion
+ * \Parameters (in) : None
  * \Parameters (out): None
- * \Return value:   : Std_ReturnType  E_OK
- *                                    E_NOT_OK
+ * \Return value:   : None
  *******************************************************************************/
 void UART_Init(void)
 {
@@ -164,6 +186,20 @@ void UART_Init(void)
     }
 }
 
+
+/******************************************************************************
+ * \Syntax          : void UART_SendChr(UART_Num_t UART_Number, u8 data)
+ * \Description     : sending a single character over a UART (Universal Asynchronous Receiver/Transmitter) interface.
+ *                    The function takes two arguments: "UART_Number", which specifies which UART interface to use,
+ *                    and "data", which is the character to send.
+ *
+ * \Sync\Async      : Asynchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : UART_Num_t UART_Number, u8 data
+ * \Parameters (out): None
+ * \Return value:   : None
+ *******************************************************************************/
+
 void UART_SendChr(UART_Num_t UART_Number, u8 data)
 {
     while (((*UART_FR_Reg_Arr[UART_Number] >> 5) & 0x01))
@@ -172,6 +208,19 @@ void UART_SendChr(UART_Num_t UART_Number, u8 data)
     }
     *UART_DR_Reg_Arr[UART_Number] = data;
 }
+
+
+/******************************************************************************
+ * \Syntax          : u8 UART_ReceiveChr(UART_Num_t UART_Number)
+ * \Description     : receiving a single character over a UART (Universal Asynchronous Receiver/Transmitter) interface.
+ *                    The function takes a single argument: "UART_Number", which specifies which UART interface to use.
+ *
+ * \Sync\Async      : Asynchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : UART_Num_t UART_Number
+ * \Parameters (out): u8
+ * \Return value:   : unsigned 8 bits (0:255)
+ *******************************************************************************/
 
 u8 UART_ReceiveChr(UART_Num_t UART_Number)
 {
@@ -182,6 +231,20 @@ u8 UART_ReceiveChr(UART_Num_t UART_Number)
     return (*UART_DR_Reg_Arr[UART_Number]);
 }
 
+
+/******************************************************************************
+ * \Syntax          : void UART_SendStr(UART_Num_t UART_Number, u8 *str)
+ * \Description     : sending a null-terminated string over a UART (Universal Asynchronous Receiver/Transmitter) interface.
+ *                    The function takes two arguments: "UART_Number",which specifies which UART interface to use, and "str",
+ *                    which is a pointer to the null-terminated string to send.
+ *
+ * \Sync\Async      : Asynchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : UART_Num_t UART_Number, u8 *str
+ * \Parameters (out): None
+ * \Return value:   : None
+ *******************************************************************************/
+
 void UART_SendStr(UART_Num_t UART_Number, u8 *str)
 {
     while (*str != '\0')
@@ -191,10 +254,37 @@ void UART_SendStr(UART_Num_t UART_Number, u8 *str)
     }
 }
 
+
+/******************************************************************************
+ * \Syntax          : void UART_SetNotification(UART_Num_t UART_Number, void (*UART_Notfi)(void))
+ * \Description     : The function simply sets the UART_Noti_Arr array element for the given UART_Number
+ *                    to the UART_Notfi function pointer. This means that whenever a UART interrupt occurs
+ *                    for that particular UART, the corresponding notification function (UART_Notfi) will be called.
+ *
+ * \Sync\Async      : ASynchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : UART_Num_t UART_Number, void (*UART_Notfi)(void)
+ * \Parameters (out): None
+ * \Return value:   : None
+ *******************************************************************************/
+
 void UART_SetNotification(UART_Num_t UART_Number, void (*UART_Notfi)(void))
 {
     UART_Noti_Arr[UART_Number] = UART_Notfi;
 }
+
+
+/******************************************************************************
+ * \Syntax          : u8 UART_readBuffer(UART_Num_t UART_Number)
+ * \Description     : The function first reads the data from the receive buffer
+ *                    corresponding to the given UART_Number and stores it in a variable bf.
+ *
+ * \Sync\Async      : Asynchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : UART_Num_t UART_Number
+ * \Parameters (out): u8
+ * \Return value:   : unsigned 8 bits (0:255)
+ *******************************************************************************/
 
 u8 UART_readBuffer(UART_Num_t UART_Number)
 {
@@ -203,6 +293,19 @@ u8 UART_readBuffer(UART_Num_t UART_Number)
     return bf;
 }
 
+
+/******************************************************************************
+ * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
+ * \Description     : Describe this service
+ *
+ * \Sync\Async      : Synchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : parameterName   Parameter Describtion
+ * \Parameters (out): None
+ * \Return value:   : Std_ReturnType  E_OK
+ *                                    E_NOT_OK
+ *******************************************************************************/
+
 void UART_readStr(UART_Num_t UART_Number, u8 *str)
 {
     u8 count=0,data = 0;
@@ -210,7 +313,6 @@ void UART_readStr(UART_Num_t UART_Number, u8 *str)
     {
         data= UART_readBuffer(UART_Number);
         if(data!=0){
-            Dio_ToggleChannel(Dio_PORTF, Dio_Pin2);
             *(str + count) =data;
             count++;
 
@@ -220,6 +322,19 @@ void UART_readStr(UART_Num_t UART_Number, u8 *str)
     *(str + count) = 0;
 
 }
+
+
+/******************************************************************************
+ * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
+ * \Description     : Describe this service
+ *
+ * \Sync\Async      : Synchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : parameterName   Parameter Describtion
+ * \Parameters (out): None
+ * \Return value:   : Std_ReturnType  E_OK
+ *                                    E_NOT_OK
+ *******************************************************************************/
 
 void UART_SendNum(UART_Num_t UART_Number, u32 num)
 {
@@ -321,12 +436,39 @@ void UART_SendNum(UART_Num_t UART_Number, u32 num)
     }
 }
 
+
+/******************************************************************************
+ * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
+ * \Description     : Describe this service
+ *
+ * \Sync\Async      : Synchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : parameterName   Parameter Describtion
+ * \Parameters (out): None
+ * \Return value:   : Std_ReturnType  E_OK
+ *                                    E_NOT_OK
+ *******************************************************************************/
+
 void UART0_Handler(void)
 {
     RxBuffer[0] = *UART_DR_Reg_Arr[0];
     UART_Noti_Arr[0]();
 
 }
+
+
+/******************************************************************************
+ * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
+ * \Description     : Describe this service
+ *
+ * \Sync\Async      : Synchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : parameterName   Parameter Describtion
+ * \Parameters (out): None
+ * \Return value:   : Std_ReturnType  E_OK
+ *                                    E_NOT_OK
+ *******************************************************************************/
+
 void UART1_Handler(void)
 {
     RxBuffer[1] = *UART_DR_Reg_Arr[1];
@@ -334,40 +476,144 @@ void UART1_Handler(void)
 
 }
 
+
+/******************************************************************************
+ * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
+ * \Description     : Describe this service
+ *
+ * \Sync\Async      : Synchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : parameterName   Parameter Describtion
+ * \Parameters (out): None
+ * \Return value:   : Std_ReturnType  E_OK
+ *                                    E_NOT_OK
+ *******************************************************************************/
+
 void UART2_Handler(void)
 {
     RxBuffer[2] = *UART_DR_Reg_Arr[2];
     UART_Noti_Arr[2]();
 
 }
+
+
+/******************************************************************************
+ * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
+ * \Description     : Describe this service
+ *
+ * \Sync\Async      : Synchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : parameterName   Parameter Describtion
+ * \Parameters (out): None
+ * \Return value:   : Std_ReturnType  E_OK
+ *                                    E_NOT_OK
+ *******************************************************************************/
+
 void UART3_Handler(void)
 {
     RxBuffer[3] = *UART_DR_Reg_Arr[3];
     UART_Noti_Arr[3]();
 
 }
+
+
+/******************************************************************************
+ * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
+ * \Description     : Describe this service
+ *
+ * \Sync\Async      : Synchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : parameterName   Parameter Describtion
+ * \Parameters (out): None
+ * \Return value:   : Std_ReturnType  E_OK
+ *                                    E_NOT_OK
+ *******************************************************************************/
+
 void UART4_Handler(void)
 {
     RxBuffer[4] = *UART_DR_Reg_Arr[4];
     UART_Noti_Arr[4]();
 
 }
+
+
+/******************************************************************************
+ * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
+ * \Description     : Describe this service
+ *
+ * \Sync\Async      : Synchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : parameterName   Parameter Describtion
+ * \Parameters (out): None
+ * \Return value:   : Std_ReturnType  E_OK
+ *                                    E_NOT_OK
+ *******************************************************************************/
+
 void UART5_Handler(void)
 {
     RxBuffer[5] = *UART_DR_Reg_Arr[5];
     UART_Noti_Arr[5]();
 
 }
+
+
+/******************************************************************************
+ * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
+ * \Description     : Describe this service
+ *
+ * \Sync\Async      : Synchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : parameterName   Parameter Describtion
+ * \Parameters (out): None
+ * \Return value:   : Std_ReturnType  E_OK
+ *                                    E_NOT_OK
+ *******************************************************************************/
+
 void UART6_Handler(void)
 {
     RxBuffer[6] = *UART_DR_Reg_Arr[6];
     UART_Noti_Arr[6]();
 
 }
+
+
+/******************************************************************************
+ * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
+ * \Description     : Describe this service
+ *
+ * \Sync\Async      : Synchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : parameterName   Parameter Describtion
+ * \Parameters (out): None
+ * \Return value:   : Std_ReturnType  E_OK
+ *                                    E_NOT_OK
+ *******************************************************************************/
+
 void UART7_Handler(void)
 {
     RxBuffer[7] = *UART_DR_Reg_Arr[7];
     UART_Noti_Arr[7]();
+
+}
+
+
+/**********************************************************************************************************************
+ *  LOCAL FUNCTIONS
+ *********************************************************************************************************************/
+/******************************************************************************
+ * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
+ * \Description     : Describe this service
+ *
+ * \Sync\Async      : Synchronous
+ * \Reentrancy      : Non Reentrant
+ * \Parameters (in) : parameterName   Parameter Describtion
+ * \Parameters (out): None
+ * \Return value:   : Std_ReturnType  E_OK
+ *                                    E_NOT_OK
+ *******************************************************************************/
+
+
+static void dummy_func(void){
 
 }
 /**********************************************************************************************************************

@@ -1,7 +1,7 @@
 /**********************************************************************************************************************
  *  FILE DESCRIPTION
  *  -----------------------------------------------------------------------------------------------------------------*/
-/**        \file  MotorDriver_Cfg.c
+/**        \file  I2C.c
  *        \brief
  *
  *      \details
@@ -12,7 +12,7 @@
 /**********************************************************************************************************************
  *  INCLUDES
  *********************************************************************************************************************/
-#include "MotorDriver_Cfg.h"
+#include "I2C.h"
 
 /**********************************************************************************************************************
  *  LOCAL MACROS CONSTANT\FUNCTION
@@ -25,7 +25,17 @@
 /**********************************************************************************************************************
  *  GLOBAL DATA
  *********************************************************************************************************************/
-
+extern I2C_Cfg_t I2C_Cfg_Arr[];
+volatile u32 *I2CMCR_Arr[] = { &I2CMCR_0_Reg, &I2CMCR_1_Reg, &I2CMCR_2_Reg,
+                               &I2CMCR_3_Reg };
+volatile u32 *I2CMTPR_Arr[] = { &I2CMTPR_0_Reg, &I2CMTPR_1_Reg, &I2CMTPR_2_Reg,
+                                &I2CMTPR_3_Reg };
+volatile u32 *I2CMSA_Arr[] = { &I2CMSA_0_Reg, &I2CMSA_1_Reg, &I2CMSA_2_Reg,
+                               &I2CMSA_3_Reg };
+volatile u32 *I2CMDR_Arr[] = { &I2CMDR_0_Reg, &I2CMDR_1_Reg, &I2CMDR_2_Reg,
+                               &I2CMDR_3_Reg };
+volatile u32 *I2CMCS_Arr[] = { &I2CMCS_0_Reg, &I2CMCS_1_Reg, &I2CMCS_2_Reg,
+                               &I2CMCS_3_Reg };
 /**********************************************************************************************************************
  *  LOCAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
@@ -49,10 +59,62 @@
  * \Return value:   : Std_ReturnType  E_OK
  *                                    E_NOT_OK
  *******************************************************************************/
-MotorDriver_Cfg_t MotorDriver_Cfg_Arr[] = {
-    {MotorA, Dio_PORTA, Dio_Pin4, Dio_PORTA, Dio_Pin5, M0PWM0, 5000},
-    {MotorB, Dio_PORTA, Dio_Pin2, Dio_PORTA, Dio_Pin3, M0PWM2, 5000},
-};
+
+void I2C_Init(void)
+{
+    u8 counter;
+    for (counter = 0; counter < 4; counter++)
+    {
+        if (I2C_Cfg_Arr[counter].Role == Slave_Init)
+        {
+            *I2CMCR_Arr[counter] &= ~(1 << 4);
+            *I2CMCR_Arr[counter] |= (1 << 5);
+        }
+        else
+        {
+            *I2CMCR_Arr[counter] &= ~(1 << 5);
+            *I2CMCR_Arr[counter] |= (1 << 4);
+        }
+
+        *I2CMTPR_Arr[counter] |= (I2C_Cfg_Arr[counter].speed << 0);
+
+    }
+}
+
+void I2C_Set_Slave_Address(I2C_Num_t I2C_Num, u32 address)
+{
+    *I2CMSA_Arr[I2C_Num] |= (address << 1);
+}
+
+
+void I2C_transmit(I2C_Num_t I2C_Num, u8 byte)
+{
+    *I2CMSA_Arr[I2C_Num] &= ~(1 << 0);
+
+    while ((*I2CMCS_Arr[I2C_Num] & (1 << 0)) != 0)
+    {/*waiting*/
+    }
+    *I2CMDR_Arr[I2C_Num] |= byte;
+    *I2CMCS_Arr[I2C_Num] |= (1 << 0);     // run
+    *I2CMCS_Arr[I2C_Num] |= (1 << 1);     // start
+
+    if ((*I2CMCS_Arr[I2C_Num] & (1 << 1)) == 0)
+    {
+
+    }
+    else
+    {
+        *I2CMCS_Arr[I2C_Num] |= (1 << 2);     // stop
+    }
+
+}
+
+
+
+u8 I2C_Receive(I2C_Num_t I2C_Num)
+{
+    *I2CMSA_Arr[I2C_Num] |= (1 << 0);
+}
 /**********************************************************************************************************************
- *  END OF FILE: MotorDriver_Cfg.c
+ *  END OF FILE: I2C.c
  *********************************************************************************************************************/

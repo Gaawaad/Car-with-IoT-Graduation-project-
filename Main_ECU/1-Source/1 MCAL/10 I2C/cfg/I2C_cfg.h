@@ -2,34 +2,22 @@
 
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
- *         File:  GPT_Cfg.h
+ *         File:  I2C_cfg.h
  *       Module:  -
  *
  *  Description:  <Write File DESCRIPTION here>
  *
  *********************************************************************************************************************/
-#ifndef GPT_CFG_H
-#define GPT_CFG_H
+#ifndef I2C_CFG_H
+#define I2C_CFG_H
 
 /**********************************************************************************************************************
  * INCLUDES
  *********************************************************************************************************************/
-#include "Std_types.h"
 
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
-
-/**********************************************************************************************************************
- *  GLOBAL  MACROS
- *********************************************************************************************************************/
-#define _GPT_PREDEF_TIMER_100US_32BIT (0)
-/*
- *Describtion : Enable/Disable the 32-bit Predefined timer with resolution 100uSec.
- *Options :
- 0   Disable the predefined timer.
- 1   Enable the predefined timer
- **************************************/
 
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION MACROS
@@ -38,50 +26,40 @@
 /**********************************************************************************************************************
  *  GLOBAL DATA TYPES AND STRUCTURES
  *********************************************************************************************************************/
+typedef enum
+{
+    Slave_Init = 0, Master_Init
+} I2C_Role_t;
+
+typedef enum
+{
+    I2C_0 = 0, I2C_1, I2C_2, I2C_3,
+} I2C_Num_t;
+
+typedef enum {
+    _400Kbps=1,
+    _100Kbps=7,
+}SCL_Clock_Speed_t;                                  //for 16MHz system clock
+
+typedef struct
+{
+    I2C_Num_t I2C_Num;
+    I2C_Role_t Role;
+    SCL_Clock_Speed_t speed;
+   // u32 Slave_Address;
+} I2C_Cfg_t;
+
 
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES
  *********************************************************************************************************************/
 
-typedef enum
-{
-    GPT_PREDF = 0, GPT_CH_A1, GPT_CH_A2, GPT_CH_A3, GPT_CH_A4, GPT_CH_A5
-} GPTChannelId_t;
-
-typedef enum
-{
-    GPT_CHANNEL_MODE_ONESHOT = 0x1,
-    GPT_CHANNEL_MODE_CONTINUOUS = 0x2,
-    GPT_CHANNEL_MODE_CAPTURE = 0x3
-
-} ChannelMode_t;
-
-typedef enum
-{
-    COUNTS_DOWN = 0, COUNTS_UP
-} GptCount_t;
-
-typedef enum
-{
-    EVENT_MODE_POSITIVE_EDGE = 0x0,  EVENT_MODE_NEGATIVE_EDGE = 0x1,  EVENT_MODE_BOTH_EDGES = 0x3
-} EventMode_t;
-typedef struct
-{
-    GPTChannelId_t GptChannelId; //
-    u32 GptChannelTickFrequency;
-    u32 GptChannelTickMaxValue; //
-    ChannelMode_t ChannelMode;  //
-    GptCount_t CountDirection;
-    EventMode_t Mode;
-    void (*GptNotification)(void); //
-
-} GptChannelConfigSet;
-
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
-#endif /* GPT_CFG_H */
+
+#endif  /* I2C_CFG_H */
 
 /**********************************************************************************************************************
- *  END OF FILE: GPT_Cfg.h
+ *  END OF FILE: I2C_cfg.h
  *********************************************************************************************************************/

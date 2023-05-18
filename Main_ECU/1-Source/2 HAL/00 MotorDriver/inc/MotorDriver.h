@@ -29,17 +29,12 @@
  *********************************************************************************************************************/
 typedef enum
 {
-    STOPPED = 0,
-    STARTED
+    STOPPED = 0, STARTED
 } PWMState_t;
 
 typedef enum
 {
-    STOP = 0,
-    FOREWORD,
-    BACKWORD,
-    RIGHT,
-    LEFT
+    STOP = 0, FOREWORD, BACKWORD, RIGHT, LEFT
 } MotorDirection_t;
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES
@@ -48,7 +43,11 @@ typedef enum
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
-
+void MotorDriver_Init(void);
+void MotorDriver_Move(MotorDirection_t Direction);
+void MotoDriver_Speed(u8 Speed);
+void MotorDriver_LeftSpeed(u8 Speed);
+void MotorDriver_RightSpeed(u8 Speed);
 #endif /* MOTOR_DRIVER_H */
 
 /**********************************************************************************************************************

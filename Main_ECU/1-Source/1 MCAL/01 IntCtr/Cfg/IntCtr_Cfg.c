@@ -37,13 +37,13 @@ ExceptionCtr_t FaultsCfg_Arr[] = {
 };
 
 IntCtrCfg_t IntCfg_Arr[] = {
-    {_INT0, 0, 0, _ENABLE},
-    {_INT1, 0, 0, _DISABLE},
-    {_INT2, 0, 0, _ENABLE},
-    {_INT3, 0, 0, _DISABLE},
-    {_INT4, 0, 0, _DISABLE},
-    {_INT5, 0, 0, _DISABLE},
-    {_INT6, 0, 0, _DISABLE},
+    {_INT0, 0, 0, _ENABLE},     //GPIO Port A
+    {_INT1, 0, 0, _DISABLE},    //GPIO Port B
+    {_INT2, 0, 0, _ENABLE},     //GPIO Port C
+    {_INT3, 0, 0, _DISABLE},    //GPIO Port D
+    {_INT4, 0, 0, _DISABLE},    //GPIO Port E
+    {_INT5, 0, 0, _ENABLE},
+    {_INT6, 0, 0, _ENABLE},
     {_INT7, 0, 0, _DISABLE},
     {_INT8, 0, 0, _DISABLE},
     {_INT9, 0, 0, _DISABLE},
@@ -56,24 +56,24 @@ IntCtrCfg_t IntCfg_Arr[] = {
     {_INT16, 0, 0, _DISABLE},
     {_INT17, 0, 0, _DISABLE},
     {_INT18, 0, 0, _DISABLE},
-    {_INT19, 0, 0, _ENABLE},
-    {_INT20, 0, 0, _DISABLE},
-    {_INT21, 0, 0, _DISABLE},
-    {_INT22, 0, 0, _DISABLE},
-    {_INT23, 0, 0, _DISABLE},
-    {_INT24, 0, 0, _DISABLE},
+    {_INT19, 0, 0, _ENABLE},  //timer 0A
+    {_INT20, 0, 0, _ENABLE},  //timer 0B
+    {_INT21, 0, 0, _ENABLE},  //timer 1A
+    {_INT22, 0, 0, _ENABLE},  //timer 1B
+    {_INT23, 0, 0, _ENABLE},  //timer 2A
+    {_INT24, 0, 0, _ENABLE},  //timer 2B
     {_INT25, 0, 0, _DISABLE},
     {_INT26, 0, 0, _DISABLE},
     {NONE, 0, 0, _RESERVED_INT},
     {_INT28, 0, 0, _DISABLE},
     {_INT29, 0, 0, _DISABLE},
-    {_INT30, 0, 0, _ENABLE},
+    {_INT30, 0, 0, _ENABLE},    //GPIO Port F
     {NONE, 0, 0, _RESERVED_INT},
     {NONE, 0, 0, _RESERVED_INT},
     {_INT33, 0, 0, _DISABLE},
     {_INT34, 0, 0, _DISABLE},
-    {_INT35, 0, 0, _DISABLE},
-    {_INT36, 0, 0, _DISABLE},
+    {_INT35, 0, 0, _ENABLE},  //timer 3A
+    {_INT36, 0, 0, _ENABLE},  //timer 3B
     {_INT37, 0, 0, _DISABLE},
     {_INT38, 0, 0, _DISABLE},
     {_INT39, 0, 0, _DISABLE},
@@ -107,8 +107,8 @@ IntCtrCfg_t IntCfg_Arr[] = {
     {NONE, 0, 0, _RESERVED_INT},
     {_INT68, 0, 0, _DISABLE},
     {_INT69, 0, 0, _DISABLE},
-    {_INT70, 0, 0, _DISABLE},
-    {_INT71, 0, 0, _DISABLE},
+    {_INT70, 0, 0, _ENABLE},   //timer 4A
+    {_INT71, 0, 0, _ENABLE},   //timer 4B
     {NONE, 0, 0, _RESERVED_INT},
     {NONE, 0, 0, _RESERVED_INT},
     {NONE, 0, 0, _RESERVED_INT},
@@ -129,8 +129,8 @@ IntCtrCfg_t IntCfg_Arr[] = {
     {NONE, 0, 0, _RESERVED_INT},
     {NONE, 0, 0, _RESERVED_INT},
     {NONE, 0, 0, _RESERVED_INT},
-    {_INT92, 0, 0, _DISABLE},
-    {_INT93, 0, 0, _DISABLE},
+    {_INT92, 0, 0, _ENABLE},   //timer 5A
+    {_INT93, 0, 0, _ENABLE},   //timer 5B
     {_INT94, 0, 0, _DISABLE},
     {_INT95, 0, 0, _DISABLE},
     {_INT96, 0, 0, _DISABLE},

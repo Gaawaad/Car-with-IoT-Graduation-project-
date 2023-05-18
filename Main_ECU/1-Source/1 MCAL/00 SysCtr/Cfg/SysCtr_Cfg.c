@@ -230,6 +230,32 @@ void Periph_Clock_Gating_Control(void)
     RCGCUART_REG &= ~(1 << 7);
 #endif
 
+    /*(I2C_Gatting)*********************************/
+
+#if (_I2C_0_CLOCK_ENABLE == 1)
+    RCGCI2C_Reg |= (1 << 0);
+#else
+    RCGCI2C_Reg &= ~(1 << 0);
+#endif
+
+#if (_I2C_1_CLOCK_ENABLE == 1)
+    RCGCI2C_Reg |= (1 << 1);
+#else
+    RCGCI2C_Reg &= ~(1 <<1 );
+#endif
+
+#if (_I2C_2_CLOCK_ENABLE == 1)
+    RCGCI2C_Reg |= (1 << 2);
+#else
+RCGCI2C_Reg &= ~(1 <<2 );
+#endif
+
+#if (_I2C_3_CLOCK_ENABLE == 1)
+    RCGCI2C_Reg |= (1 << 3);
+#else
+RCGCI2C_Reg &= ~(1 << 3);
+#endif
+
 }
 
 /**********************************************************************************************************************

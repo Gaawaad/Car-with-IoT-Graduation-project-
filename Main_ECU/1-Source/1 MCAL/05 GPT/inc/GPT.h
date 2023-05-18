@@ -1,5 +1,4 @@
 /**********************************************************************************************************************
-
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
  *         File:  GPT.h
@@ -47,6 +46,11 @@ void GPT_StartTimer(GPTChannelId_t GptChannelId);
 void GPT_StopTimer(GPTChannelId_t GptChannelId);
 u32 GPT_GetTime(GPTChannelId_t GptChannelId);
 void GPT_RestTimer(GPTChannelId_t GptChannelId);
+
+
+void GPT0_CaptureMode_Init(void);
+u32 GPT0_PulseWidthTime(void);
+void GPT_delay(GPTChannelId_t GptChannelId, u32 delay);
 #endif  /* GPT_H */
 
 /**********************************************************************************************************************

@@ -27,9 +27,9 @@
  *********************************************************************************************************************/
 
 PORT_INT_Cfg_t InterruptCfg_Arr[] = {
-    {PORTA, PORT_Pin0, INT_ENABLE, _ANY_EDGE},
+    {PORTA, PORT_Pin0, INT_DISABLE, _ANY_EDGE},
     {PORTA, PORT_Pin1, INT_DISABLE, _ANY_EDGE},
-    {PORTA, PORT_Pin2, INT_ENABLE, _FALLING_EDGE},
+    {PORTA, PORT_Pin2, INT_ENABLE, _ANY_EDGE}, //ultrasonic echo
     {PORTA, PORT_Pin3, INT_DISABLE, _ANY_EDGE},
     {PORTA, PORT_Pin4, INT_DISABLE, _ANY_EDGE},
     {PORTA, PORT_Pin5, INT_DISABLE, _ANY_EDGE},
@@ -72,11 +72,11 @@ PORT_INT_Cfg_t InterruptCfg_Arr[] = {
     {PORTE, PORT_Pin6, INT_DISABLE, _ANY_EDGE},
     {PORTE, PORT_Pin7, INT_DISABLE, _ANY_EDGE},
 
-    {PORTF, PORT_Pin0, INT_DISABLE, _ANY_EDGE},
+    {PORTF, PORT_Pin0, INT_ENABLE, _RISING_EDGE},
     {PORTF, PORT_Pin1, INT_DISABLE, _ANY_EDGE},
     {PORTF, PORT_Pin2, INT_DISABLE, _ANY_EDGE},
     {PORTF, PORT_Pin3, INT_DISABLE, _ANY_EDGE},
-    {PORTF, PORT_Pin4, INT_DISABLE, _ANY_EDGE},
+    {PORTF, PORT_Pin4, INT_ENABLE, _RISING_EDGE},
 
 };
 

@@ -1,7 +1,7 @@
 /Debug/
-/Main_ECU/.ccsproject
-/Main_ECU/.cproject
-/Main_ECU/.project
+/Main_ECU/.ccsproject/
+/Main_ECU/.cproject/
+/Main_ECU/.project/
 /Main_ECU/.launches/
 /Main_ECU/.settings/
 /Main_ECU/targetConfigs/

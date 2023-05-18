@@ -48,7 +48,8 @@ volatile u32 *GPTMICR_Reg_Arr[] = { &GPTMICR_0A_Reg, &GPTMICR_1A_Reg,
 volatile u32 *GPTMTAPR_Reg_Arr[] = { &GPTMTAPR_0A_Reg, &GPTMTAPR_1A_Reg,
                                      &GPTMTAPR_2A_Reg, &GPTMTAPR_3A_Reg,
                                      &GPTMTAPR_4A_Reg, &GPTMTAPR_5A_Reg, };
-u8 InterruptNum_Arr[] = { _INT19, _INT21, _INT23, _INT35, _INT70, _INT92 };
+IntCtrNum_t InterruptNum_Arr[] = { _INT19, _INT21, _INT23, _INT35, _INT70,
+                                   _INT92 };
 static func Noti_Arr[6];
 u32 Counts_Arr[] = { 0, 0, 0, 0, 0, 0 };
 /**********************************************************************************************************************
@@ -148,6 +149,48 @@ void GPT_RestTimer(GPTChannelId_t GptChannelId)
 #endif
 }
 
+void GPT0_CaptureMode_Init(void)
+{
+
+    /* make PB6 an input pin */
+    /* make PB6 as digital pin */
+    /* use PB6 alternate function */
+    /* configure PB6 for T0CCP0 */
+    GPTMCTL_0A_Reg &= ~1; /* disable GPTr0A  */
+    GPTMCFG_0A_Reg |= 4; /* 16-bit */
+    GPTMTAMR_0A_Reg |= 0x17; /* up-count, edge-time, capture mode */
+    GPTMCTL_0A_Reg |= 0x0C;/* capture the rising edge */
+    GPTMCTL_0A_Reg |= (1 << 0);/* enable GPT0A */
+}
+
+u32 GPT0_PulseWidthTime(void)
+{
+    u32 PrevEdge=0, CurrEdge=0, diff=0;
+    GPTMICR_0A_Reg |= 4; /* clear GPT0A capture flag */
+    while ((GPTMRIS_0A_Reg & 4) == 0)
+        ; /* wait for capturing */
+    if (GPIODATA_B_Reg & (1 << 6))
+    {
+        PrevEdge = GPTMTAILR_0A_Reg;
+    }
+    GPTMICR_0A_Reg |= 4; /* clear GPT0A capture flag */
+    while ((GPTMRIS_0A_Reg & 4) == 0)
+        ; /* wait for capturing */
+    CurrEdge = GPTMTAILR_0A_Reg;
+    diff = CurrEdge - PrevEdge;
+    return diff;
+}
+
+void GPT_delay(GPTChannelId_t GptChannelId, u32 delay)
+{
+    Gpt_Init(GptChannelId, 0);
+    GPT_StartTimer(GptChannelId);
+    u32 Ctime = 0;
+    while (Ctime < delay)
+    {
+        Ctime = GPT_GetTime(GptChannelId);
+    }
+}
 void TIMER0A_Handler(void)
 {
     *GPTMICR_Reg_Arr[0] |= (1 << 0);
@@ -157,6 +200,7 @@ void TIMER0A_Handler(void)
     }
     Counts_Arr[0]++;
 }
+
 void TIMER1A_Handler(void)
 {
     *GPTMICR_Reg_Arr[1] |= (1 << 0);

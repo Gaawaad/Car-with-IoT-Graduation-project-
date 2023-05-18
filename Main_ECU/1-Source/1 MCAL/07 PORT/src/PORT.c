@@ -2,10 +2,21 @@
  *  FILE DESCRIPTION
  *  -----------------------------------------------------------------------------------------------------------------*/
 /**        \file  PORT.c
- *        \brief
- *
- *      \details
- *
+ *        \brief  Configure all pins of the MicroController
+ *      \details  Contains:
+ *                  1-LOCAL DATA
+ *                       GPIODIR_Arr[]          Array
+ *                       GPIODATA_Arr[]         Array
+ *                       GPIOPDR_Arr[]          Array
+ *                       GPIOPUR_Arr[]          Array
+ *                       GPIOODR_Arr[]          Array
+ *                       GPIODEN_Arr[]          Array
+ *                       GPIOAFSEL_Arr[]        Array
+ *                       GPIOPCTL_Arr[]         Array
+ *                  2-GLOBAL DATA
+ *                       PORT_Cfg_Arr[]         Array(extern)
+ *                  3-GLOBAL FUNCTIONS
+ *                       void PORT_Init(void)
  *
  *********************************************************************************************************************/
 
@@ -13,10 +24,6 @@
  *  INCLUDES
  *********************************************************************************************************************/
 #include "PORT.h"
-
-/**********************************************************************************************************************
- *  LOCAL MACROS CONSTANT\FUNCTION
- *********************************************************************************************************************/
 
 /**********************************************************************************************************************
  *  LOCAL DATA
@@ -44,17 +51,28 @@ volatile u32 *GPIOPCTL_Arr[] = { &GPIOPCTL_A_Reg, &GPIOPCTL_B_Reg,
  *  GLOBAL DATA
  *********************************************************************************************************************/
 extern PORT_Cfg_t PORT_Cfg_Arr[];
-/**********************************************************************************************************************
- *  LOCAL FUNCTION PROTOTYPES
- *********************************************************************************************************************/
-
-/**********************************************************************************************************************
- *  LOCAL FUNCTIONS
- *********************************************************************************************************************/
 
 /**********************************************************************************************************************
  *  GLOBAL FUNCTIONS
  *********************************************************************************************************************/
+
+/******************************************************************************
+* \Syntax          : void PORT_Init(void);
+* \Description     : The PORT_Init() function is defined, which iterates
+*                    through all the elements of "PORT_Cfg_Arr" and performs the configuration
+*                    for each pin based on the parameters in the array. The function sets the
+*                    digital enable bit for the pin and sets up the pin for alternate function
+*                    if required. It sets the direction of the pin as output or input and sets
+*                    the level of the pin as high or low. Additionally, the function configures
+*                    the pin for pull-up, pull-down, or open-drain connection.
+*
+* \Sync\Async      : Asynchronous
+* \Reentrancy      : Non Reentrant
+* \Parameters (in) : None
+* \Parameters (out): None
+* \Return value:   : None
+*/
+
 void PORT_Init(void)
 {
     u8 count1;

@@ -42,6 +42,11 @@ static void IntDefaultHandler(void);
 //*****************************************************************************
 extern void _c_int00(void);
 extern void GPIOA_Handler(void);
+extern void GPIOB_Handler(void);
+extern void GPIOC_Handler(void);
+extern void GPIOD_Handler(void);
+extern void GPIOE_Handler(void);
+extern void GPIOF_Handler(void);
 extern void TIMER0A_Handler(void);
 extern void TIMER1A_Handler(void);
 extern void TIMER2A_Handler(void);
@@ -98,10 +103,10 @@ void (*const g_pfnVectors[])(void) =
         IntDefaultHandler,// The PendSV handler
         IntDefaultHandler,// The SysTick handler
         GPIOA_Handler,// GPIO Port A
-        IntDefaultHandler,// GPIO Port B
-        IntDefaultHandler,// GPIO Port C
-        IntDefaultHandler,// GPIO Port D
-        IntDefaultHandler,// GPIO Port E
+        GPIOB_Handler,// GPIO Port B
+        GPIOC_Handler,// GPIO Port C
+        GPIOD_Handler,// GPIO Port D
+        GPIOE_Handler,// GPIO Port E
         UART0_Handler,// UART0 Rx and Tx
         UART1_Handler,// UART1 Rx and Tx
         IntDefaultHandler,// SSI0 Rx and Tx
@@ -127,7 +132,7 @@ void (*const g_pfnVectors[])(void) =
         IntDefaultHandler,// Analog Comparator 2
         IntDefaultHandler,// System Control (PLL, OSC, BO)
         IntDefaultHandler,// FLASH Control
-        IntDefaultHandler,// GPIO Port F
+        GPIOF_Handler,// GPIO Port F
         IntDefaultHandler,// GPIO Port G
         IntDefaultHandler,// GPIO Port H
         UART2_Handler,// UART2 Rx and Tx
