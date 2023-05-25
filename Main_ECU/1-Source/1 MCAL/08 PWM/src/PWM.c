@@ -281,7 +281,7 @@ void PWM_Set_Duty(PWM_Channel_t Channel, u8 DutyCycle)
     }
 }
 /******************************************************************************
- * \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)
+ * \Syntax          : void PWM_Set_Frequency(PWM_Channel_t Channel, u32 frequency)
  * \Description     : This function sets the frequency of a specified PWM output channel.
  *                    he function takes two parameters: Channel, which specifies the PWM output channel to configure;
  *                    and frequency, which specifies the PWM frequency to set.The function updates the frequency value
